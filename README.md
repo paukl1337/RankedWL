@@ -7,7 +7,10 @@ USAGE:
 I suggest that u create a new folder and place this file in there
 
 1) install java 15+ if you don't have it already
-2) open the program like this from command prompt:
+2) change directory to rankedwl folder (txt files will be created in the working directory)
+   ex:
+   `cd "C:\Users\paul\OneDrive\Desktop\Minecraft\Ranked WL"`
+4) open the program like this from command prompt:
    
 `"C:\Program Files\Eclipse Adoptium\jdk-17.0.7.7-hotspot\bin\java" -jar "D:\Downloads\RankedWL.jar"`
 
