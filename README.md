@@ -1,5 +1,9 @@
-usage
+I made this program to get the wins, losses, and elo/elo rank of a player using the MCSR Ranked API. 
 
+(IF U LOOK AT THE CODE I AM SORRY FOR THE FORMATTING I'M SORRY FOR MY LACK OF COMMENTS I'M SORRY FOR EVERYTHING 
+   I ALSO HAVE NEVER USED GITHUB BEFORE SO SORRY IF SOMETHING IS BAD...)
+
+USAGE:
 I suggest that u create a new folder and place this file in there
 
 1) install java 15+ if you don't have it already
