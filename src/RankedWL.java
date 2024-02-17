@@ -168,13 +168,13 @@ public class RankedWL
                 makeLossFile();
                 makeEloFile();
                 makeEloRankFile();
-                winFile.println(winsSes);
+                winFile.println(winsSes + "W");
                 winFile.close();
-                lossFile.println(lossesSes);
+                lossFile.println(lossesSes + "L");
                 lossFile.close();
-                eloRankFile.println(eloRank);
+                eloRankFile.println("Rank: " + eloRank);
                 eloRankFile.close();
-                eloFile.println(eloRate);
+                eloFile.println("Elo: " + eloRate);
                 eloFile.close();
             }
 
