@@ -10,4 +10,6 @@ I suggest that u create a new folder and place this file in there
 where you need to change the java path to wherever you have java installed to, and the rankedwl path 
 (I copied this text from maskers' message in javacord cause I can't be asked to remake one myself)
 
+if u want u can create a bat file and inside put the same code u used inside command prompt
+
 rest should be pretty simple :D
