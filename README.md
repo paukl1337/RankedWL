@@ -12,6 +12,5 @@ I suggest that u create a new folder and place this file in there
 `"C:\Program Files\Eclipse Adoptium\jdk-17.0.7.7-hotspot\bin\java" -jar "D:\Downloads\RankedWL.jar"`
 
 where you need to change the java path to wherever you have java installed to, and the rankedwl path 
-(I copied this text from maskers' message in javacord cause I can't be asked to remake one myself)
 
 rest should be pretty simple :D
