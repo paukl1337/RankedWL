@@ -167,7 +167,7 @@ public class RankedWL
     public void doWork()
     {
         String mcIgn = userInput;
-        String apiUrl = "http://mcsrranked.com/api/users/" + mcIgn;
+        String apiUrl = "https://mcsrranked.com/api/users/" + mcIgn;
         try {
             URL url = new URL(apiUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -216,15 +216,15 @@ public class RankedWL
                 if(eloDiff == 0)
                     eloDiffFile.println();
                 else
-                    if(eloDiff < 0)
-                    {
-                        System.out.printf("Down %d elo\n", Math.abs(eloDiff));
-                        eloDiffFile.printf("Down %d elo", Math.abs(eloDiff));
-                    } else
-                    {
-                        System.out.printf("Up %d elo\n", Math.abs(eloDiff));
-                        eloDiffFile.printf("Up %d elo", Math.abs(eloDiff));
-                    }
+                if(eloDiff < 0)
+                {
+                    System.out.printf("Down %d elo\n", Math.abs(eloDiff));
+                    eloDiffFile.printf("Down %d elo", Math.abs(eloDiff));
+                } else
+                {
+                    System.out.printf("Up %d elo\n", Math.abs(eloDiff));
+                    eloDiffFile.printf("Up %d elo", Math.abs(eloDiff));
+                }
                 eloDiffFile.close();
                 winFile.println(winsSes + "W" + " - " + lossesSes + "L");
                 winFile.close();
@@ -244,7 +244,7 @@ public class RankedWL
     public void getCompletionAvg()
     {
         String mcId = userId;
-        String apiUrl = "http://mcsrranked.com/api/users/" + mcId + "/matches";
+        String apiUrl = "https://mcsrranked.com/api/users/" + mcId + "/matches";
         try {
             URL url = new URL(apiUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
