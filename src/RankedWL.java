@@ -276,7 +276,7 @@ public class RankedWL
                     {
                         if(gotIT.equals(userId))
                         {
-                            completions[completions.length - toAdd - 1] = matchResult.getInt("time");
+                            completions[toAdd] = matchResult.getInt("time");
                             toAdd++;
                         }
                     }
