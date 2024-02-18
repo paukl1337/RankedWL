@@ -34,6 +34,7 @@ public class RankedWL
     String completionOut;
     int startId; // id of first match in tree ( I can't explain )
     int toAdd;
+
     public RankedWL()
     {
         winFile = eloDiffFile = eloFile = null;
@@ -63,7 +64,7 @@ public class RankedWL
     public void getUserName()
     {
         Scanner kb = new Scanner(System.in);
-        System.out.print("Please enter the username to track! -> ");
+        System.out.print("Please enter the username to track! -> "); // prompt user
         userInput = kb.next();
     }
     public void requestData()
@@ -72,7 +73,7 @@ public class RankedWL
         doWork();
         while(true)
         {
-            if(t.hasElapsed(30000, true))
+            if(t.hasElapsed(30000, true)) // every 30 seconds
                 doWork();
         }
 
