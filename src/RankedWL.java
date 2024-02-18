@@ -281,6 +281,7 @@ public class RankedWL
                         {
                             completions[toAdd] = matchResult.getInt("time");
                             toAdd++;
+                            startId = lastMatch.getInt("id");
                         }
                     }
                 int sum = 0;
