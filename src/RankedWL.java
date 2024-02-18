@@ -280,6 +280,9 @@ public class RankedWL
                         if(gotIT.equals(userId))
                         {
                             completions[toAdd] = matchResult.getInt("time");
+                            System.out.printf("Completed with a time of %02d:%02d\n",
+                                    TimeUnit.MILLISECONDS.toMinutes(matchResult.getInt("time")),
+                                    TimeUnit.MILLISECONDS.toSeconds(matchResult.getInt("time")) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(matchResult.getInt("time"))));
                             toAdd++;
                             startId = lastMatch.getInt("id");
                         }
@@ -292,7 +295,6 @@ public class RankedWL
                     {
                         sum += completions[i];
                         length++;
-                        System.out.println("HEY" + completions[i]);
                     }
                 }
                 int average = 0;
