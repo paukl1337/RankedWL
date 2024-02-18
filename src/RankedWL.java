@@ -7,6 +7,8 @@
 ///     request data from api every 30 seconds
 ///     subtract wins/losses from wins/losses at start of session
 import java.io.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -285,9 +287,12 @@ public class RankedWL
                 int length = 0;
                 for(int i = 0; i<completions.length; i++)
                 {
-                    if(completions[i] != 0)
-                        length += 1;
-                    sum += completions[i];
+                    if (completions[i] > 0)
+                    {
+                        sum += completions[i];
+                        length++;
+                        System.out.println("HEY" + completions[i]);
+                    }
                 }
                 int average = 0;
                 if(length != 0)
@@ -297,7 +302,7 @@ public class RankedWL
                         TimeUnit.MILLISECONDS.toSeconds(average) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(average))
                 ));
                 makeAvgFile();
-                avgFile.println(String.format("Average: %02dm, %02ds",
+                avgFile.println(String.format("Average: %02d:%02d",
                         TimeUnit.MILLISECONDS.toMinutes(average),
                         TimeUnit.MILLISECONDS.toSeconds(average) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(average))
                 ));
