@@ -128,6 +128,7 @@ public class RankedWL
             System.exit(1);
         }
     }
+    // I didn't need this method at all the uuid is in the ranked api anyways OMEGA
     public void getUUID()
     {
         String mcName = userInput;
