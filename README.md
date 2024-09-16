@@ -5,7 +5,9 @@ I made this program to get the wins, losses, and elo/elo rank of a player using 
 
 USAGE:
 I suggest that u create a new folder and place this file in there
+
 install java 15+ if you don't have it already
+
 if u enter an invalid name the file will just stop working so if u do that just close and reopen it
 
 rest should be pretty simple :D
