@@ -6,18 +6,18 @@
 ///     request amount of wins / losses stored into an integer
 ///     request data from api every 30 seconds
 ///     subtract wins/losses from wins/losses at start of session
-import java.io.*;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Scanner;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 
@@ -27,7 +27,8 @@ public class RankedWL
     PrintWriter winFile, eloDiffFile, eloFile, avgFile;
     String userInput;
     String userId;
-    int winsSes, lossesSes; // wins and losses for the session
+    static int winsSes;
+    static int lossesSes; // wins and losses for the session
     int winsSeason, lossSeason; // total wins and losses for the season
     int eloRank, eloRate; // elo rank and elo
     int startingElo, eloDiff; //starting elo and elo difference from starting and current elo
@@ -36,50 +37,26 @@ public class RankedWL
     String completionOut;
     int startId; // id of first match in tree ( I can't explain )
     int toAdd;
+    static GUI gui;
 
     public RankedWL()
     {
         winFile = eloDiffFile = eloFile = null;
-        userInput = completionOut = "";
+        completionOut = "";
         winFileName = "WL.txt";
         avgFileName = "avgComp.txt";
         eloDiffFileName = "eloDiff.txt";
         eloFileName = "elo.txt";
-        winsSes = lossesSes = winsSeason = lossSeason = eloRank = eloRate = startingElo = completionAvg = startId = -1;
+        winsSes = lossesSes = winsSeason = lossSeason = eloRank = eloRate = startingElo = completionAvg = startId = - 1;
         toAdd = 0;
-        completions = new int[100]; // no way anyone is gonna play over 100 matches
+        completions = new int[ 100 ];
     }
 
     public static void main(String[] args)
     {
-        RankedWL rwl = new RankedWL();
-        rwl.doIt();
+        SwingUtilities.invokeLater(() -> gui = new GUI());
     }
 
-    public void doIt()
-    {
-        getUserName();
-        getUUID();
-        requestData();
-
-    }
-    public void getUserName()
-    {
-        Scanner kb = new Scanner(System.in);
-        System.out.print("Please enter the username to track! -> "); // prompt user
-        userInput = kb.next();
-    }
-    public void requestData()
-    {
-        Timer t = new Timer();
-        doWork();
-        while(true)
-        {
-            if(t.hasElapsed(30000, true)) // every 30 seconds
-                doWork();
-        }
-
-    }
     public void makeWinFile()
     {
         File file = new File(winFileName);
@@ -92,6 +69,7 @@ public class RankedWL
             System.exit(1);
         }
     }
+
     public void makeEloDiffFile()
     {
         File file = new File(eloDiffFileName);
@@ -104,6 +82,7 @@ public class RankedWL
             System.exit(1);
         }
     }
+
     public void makeEloFile()
     {
         File file = new File(eloFileName);
@@ -116,6 +95,7 @@ public class RankedWL
             System.exit(1);
         }
     }
+
     public void makeAvgFile()
     {
         File file = new File(avgFileName);
@@ -128,48 +108,13 @@ public class RankedWL
             System.exit(1);
         }
     }
-    // I didn't need this method at all the uuid is in the ranked api anyways OMEGA
-    public void getUUID()
-    {
-        String mcName = userInput;
-        String apiUrl = "https://playerdb.co/api/player/minecraft/" + mcName;
-        try {
-            URL url = new URL(apiUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.connect();
-
-            int responseCode = conn.getResponseCode();
-
-            if (responseCode != 200) {
-                throw new RuntimeException("HttpResponseCode: " + responseCode);
-            } else {
-                StringBuilder informationString = new StringBuilder();
-                Scanner scanner = new Scanner(url.openStream());
-
-                while (scanner.hasNext()) {
-                    informationString.append(scanner.nextLine());
-                }
-
-                scanner.close();
-
-                JSONObject jsonObject = new JSONObject(informationString.toString());
-                JSONObject data = jsonObject.getJSONObject("data");
-                JSONObject player = data.getJSONObject("player");
-                userId = player.getString("raw_id");
-            }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void doWork()
     {
         String mcIgn = userInput;
         String apiUrl = "https://mcsrranked.com/api/users/" + mcIgn;
-        try {
+        try
+        {
             URL url = new URL(apiUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -177,13 +122,16 @@ public class RankedWL
 
             int responseCode = conn.getResponseCode();
 
-            if (responseCode != 200) {
+            if (responseCode != 200)
+            {
                 throw new RuntimeException("HttpResponseCode: " + responseCode);
-            } else {
+            } else
+            {
                 StringBuilder informationString = new StringBuilder();
                 Scanner scanner = new Scanner(url.openStream());
 
-                while (scanner.hasNext()) {
+                while (scanner.hasNext())
+                {
                     informationString.append(scanner.nextLine());
                 }
 
@@ -195,7 +143,7 @@ public class RankedWL
                 JSONObject season = statistics.getJSONObject("season");
                 JSONObject wins = season.getJSONObject("wins");
                 JSONObject loses = season.getJSONObject("loses");
-                if(winsSeason == -1 && lossSeason == -1 && startingElo == -1)
+                if (winsSeason == - 1 && lossSeason == - 1 && startingElo == - 1)
                 {
                     winsSeason = wins.getInt("ranked");
                     lossSeason = loses.getInt("ranked");
@@ -212,12 +160,12 @@ public class RankedWL
                         eloRate,
                         eloRank);
                 makeWinFile();
-                makeEloFile();;
+                makeEloFile();
+                ;
                 makeEloDiffFile();
-                if(eloDiff == 0)
-                    eloDiffFile.println();
-                else
-                if(eloDiff < 0)
+                if (eloDiff == 0)
+                    eloDiffFile.println("Up - elo");
+                else if (eloDiff < 0)
                 {
                     System.out.printf("Down %d elo\n", Math.abs(eloDiff));
                     eloDiffFile.printf("Down %d elo", Math.abs(eloDiff));
@@ -234,9 +182,11 @@ public class RankedWL
                 getCompletionAvg();
             }
 
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException e)
+        {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
     }
@@ -244,9 +194,9 @@ public class RankedWL
     // I put this in a separate method just to make it easier for me to code..
     public void getCompletionAvg()
     {
-        String mcId = userId;
-        String apiUrl = "https://mcsrranked.com/api/users/" + mcId + "/matches";
-        try {
+        String apiUrl = "https://mcsrranked.com/api/users/" + userInput + "/matches";
+        try
+        {
             URL url = new URL(apiUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -254,13 +204,16 @@ public class RankedWL
 
             int responseCode = conn.getResponseCode();
 
-            if (responseCode != 200) {
+            if (responseCode != 200)
+            {
                 throw new RuntimeException("HttpResponseCode: " + responseCode);
-            } else {
+            } else
+            {
                 StringBuilder informationString = new StringBuilder();
                 Scanner scanner = new Scanner(url.openStream());
 
-                while (scanner.hasNext()) {
+                while (scanner.hasNext())
+                {
                     informationString.append(scanner.nextLine());
                 }
 
@@ -270,17 +223,17 @@ public class RankedWL
                 JSONArray data = jsonObject.getJSONArray("data");
                 JSONObject lastMatch = data.getJSONObject(0);
                 JSONObject matchResult = lastMatch.getJSONObject("result");
-                if(startId == -1)
+                if (startId == - 1)
                     startId = lastMatch.getInt("id");
                 boolean forfeited = lastMatch.getBoolean("forfeited");
                 String gotIT = matchResult.get("uuid") + "";
                 int lastMatchId = lastMatch.getInt("id");
-                if(lastMatchId != startId)
-                    if(lastMatch.getInt("type") == 2 && !forfeited)
+                if (lastMatchId != startId)
+                    if (lastMatch.getInt("type") == 2 && ! forfeited)
                     {
-                        if(gotIT.equals(userId))
+                        if (gotIT.equals(userId))
                         {
-                            completions[toAdd] = matchResult.getInt("time");
+                            completions[ toAdd ] = matchResult.getInt("time");
                             System.out.printf("Completed with a time of %02d:%02d\n",
                                     TimeUnit.MILLISECONDS.toMinutes(matchResult.getInt("time")),
                                     TimeUnit.MILLISECONDS.toSeconds(matchResult.getInt("time")) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(matchResult.getInt("time"))));
@@ -290,62 +243,37 @@ public class RankedWL
                     }
                 int sum = 0;
                 int length = 0;
-                for(int i = 0; i<completions.length; i++)
+                for (int i = 0; i < completions.length; i++)
                 {
-                    if (completions[i] > 0)
+                    if (completions[ i ] > 0)
                     {
-                        sum += completions[i];
+                        sum += completions[ i ];
                         length++;
                     }
                 }
                 int average = 0;
-                if(length != 0)
+                if (length != 0)
                     average = sum / length;
                 System.out.println(String.format("Average: %02d min, %02d sec",
                         TimeUnit.MILLISECONDS.toMinutes(average),
                         TimeUnit.MILLISECONDS.toSeconds(average) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(average))
                 ));
                 makeAvgFile();
-                avgFile.println(String.format("Average: %02d:%02d",
-                        TimeUnit.MILLISECONDS.toMinutes(average),
-                        TimeUnit.MILLISECONDS.toSeconds(average) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(average))
-                ));
+                if (average != 0)
+                    avgFile.println(String.format("Average: %02d:%02d",
+                            TimeUnit.MILLISECONDS.toMinutes(average),
+                            TimeUnit.MILLISECONDS.toSeconds(average) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(average))
+                    ));
+                else
+                    avgFile.println("Average: -");
                 avgFile.close();
             }
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException e)
+        {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
-    }
-
-
-}
-
-class Timer
-{
-    public long lastMS = System.currentTimeMillis();
-
-    public void reset()
-    {
-        lastMS = System.currentTimeMillis();
-    }
-
-    public boolean hasElapsed(long time, boolean doReset)
-    {
-        if (System.currentTimeMillis() - lastMS > time) {
-            if (doReset)
-                reset();
-
-
-            return true;
-        }
-        return false;
-    }
-
-
-    public long getTime()
-    {
-        return System.currentTimeMillis() - lastMS;
     }
 }
